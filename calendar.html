@@ -1,0 +1,234 @@
+<!doctype html>
+<html>
+<head>
+<style>
+*{
+	margin:0;
+	font-family: calibri;
+	font-size:40px;
+}
+.box{
+	float:left;
+	background-color: #555;
+	display:block;
+	color: white;
+}
+#txt1{
+	float:left;
+	background-color: #555;
+	display:block;
+	color: white;
+}
+#txt2{
+	color:orange;font-size:16px;
+}
+#txt3{
+	color:white;font-size:24px;
+}
+tr{
+	margin:0;
+}
+tr td{
+	display: block;
+	font-size:16px;
+	height:40px;
+	line-height: 34px;
+	background-color: #555;
+	width: 13.73%;
+	text-align:center;
+	color:white;
+	float:left;
+}
+.hov td:hover{
+	background-color:#111;
+}
+.xx{
+	color:grey;
+}
+.today{
+	background-color:#222;
+}
+</style>
+
+<script>
+function startTime() {
+    var today1 = new Date();
+	var y = today1.getYear();
+	var mn = today1.getMonth();
+	var d = today1.getDate();
+	var day = today1.getDay();
+    var h = today1.getHours();
+    var m = today1.getMinutes();
+    var s = today1.getSeconds();
+	if(h>12) {
+		h-=12;
+		mer = "PM";
+	}else{
+		mer = "AM";
+	}
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('txt1').innerHTML =
+    checkTime(h) + ":" + m + ":" + s + " " + mer;
+	document.getElementById('txt2').innerHTML =
+    nameday(day) + " " + checkTime(d) + "-" + checkTime(mn+1) + "-" + (y+1900);
+	document.getElementById('txt3').innerHTML = namemonth(mn) + ", " + (y+1900);
+    var t = setTimeout(startTime, 1000);
+}
+function nameday(i){
+	var a = new Array(7);
+	a[0] = "Sunday";
+	a[1] = "Monday";
+	a[2] = "Tuesday";
+	a[3] = "Wednesday";
+	a[4] = "Thursday";
+	a[5] = "Friday";
+	a[6] = "Saturday";
+	return a[i];
+}
+function namemonth(i){
+	var a = new Array(12);
+	a[0] = "January";
+	a[1] = "February";
+	a[2] = "March";
+	a[3] = "April";
+	a[4] = "May";
+	a[5] = "June";
+	a[6] = "July";
+	a[7] = "August";
+	a[8] = "September";
+	a[9] = "October";
+	a[10] = "November";
+	a[11] = "December";
+	return a[i];
+}
+function checkTime(i) {
+    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+    return i;
+}
+ 
+</script>
+
+<script>
+function leapyear(year){
+	if (year % 4 == 0) // basic rule
+	return true // is leap year
+	/* else */ // else not needed when statement is "return"
+	return false
+}
+
+function dayinmonth(month,year){
+	var ar = new Array(12)
+	ar[0] = 31 // January
+	ar[1] = (leapyear(year)) ? 29 : 28 // February
+	ar[2] = 31 // March
+	ar[3] = 30 // April
+	ar[4] = 31 // May
+	ar[5] = 30 // June
+	ar[6] = 31 // July
+	ar[7] = 31 // August
+	ar[8] = 30 // September
+	ar[9] = 31 // October
+	ar[10] = 30 // November
+	ar[11] = 31 // December
+	return ar[month]
+}
+
+function dayone(date,day){
+	date = date%7;
+	if(day >= date){
+		day -= date
+	}else{
+		day += (7-date)
+	}
+	if(day == 6)
+	return 0
+	else
+	return day+1
+}
+
+function calendar(){
+	//day
+	var text1=""
+	text1 += '<table cellspacing="0" border="0" width="100%">'
+	text1 += '<tr>'
+	var a = new Array(7)
+	a[0]="Mo"
+	a[1]="Tu"
+	a[2]="We"
+	a[3]="Th"
+	a[4]="Fr"
+	a[5]="Sa"
+	a[6]="Su"
+	for(var i=0;i<=6;i++){
+		text1 += '<td>' + a[i] + '</td>'
+	}
+	text1 += '</tr></table>'
+	
+	text1 += '<table cellspacing="0" border="0" width="100%">'
+	
+	
+	//number
+	var today1 = new Date();
+	var y = today1.getYear();
+	var mn = today1.getMonth();
+	var d = today1.getDate();
+	var td = dayinmonth(mn,y);
+	var tdb = dayinmonth(mn-1,y);
+	var day = today1.getDay();
+	var od = dayone(d,day);
+	
+	text1 += '<tr class="hov">'
+	var c=0;
+	var days = 1;
+	var r = tdb-5;
+	if(od != 0)
+		r = (tdb+1) - (od-1)
+	for(var i = r;i<=tdb;i++,c++)
+		text1 += '<td class="xx">' + i + '</td>';
+	for(var i=c;i<7;i++,days++)
+		if(days != d) text1 += '<td>' + days + '</td>';
+		else text1 += '<td class="today">' + days + '</td>';
+	text1 += '</tr>'
+	
+	for(var i=0;i<(td/7);i++){
+		text1 += '<tr class="hov">'
+		for(var j=0;j<=6;j++,days++){
+			if(days>td )
+			text1 += '<td class="xx">' + (days%td) + '</td>'
+			else{
+				if(days != d) text1 += '<td>' + days + '</td>';
+				else text1 += '<td class="today">' + days + '</td>';
+			}
+		}
+		text1 += '</tr>'
+	}
+	text1 += '</table>'
+	
+	
+	document.write(text1)
+}
+
+</script>
+</head>
+
+<body onload="startTime()">
+<div style="width:30%;float:left;background-color: #555;;">
+<div id="txt1" style="width:95%;padding: 10px 0 0 0;margin-left: 5%;"></div>
+<div class="box" style="width:95%;padding: 0 0 5px 0;margin-left: 5%;">
+<div id="txt2"></div>
+</div>
+<div class="box" style="width:95%;padding: 5px 0 5px 0;margin-left: 5%;">
+<div id="txt3"></div>
+</div>
+
+<div class="box" style="width:100%;margin:0;">
+<script>
+	calendar()
+</script>
+
+
+</div>
+</div>
+</body>
+</html>
