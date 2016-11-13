@@ -1,0 +1,55 @@
+
+<html>
+<head>
+<style>
+#txt{
+	color: white;
+	font-family: "AR DESTINE";
+	font-size: 5em;
+	background-color: teal;
+	padding: 20px 30px;
+	display: block;
+	width: 250px;
+}
+#txt2{
+	color: white;
+	font-family: "AR DESTINE";
+	font-size: 5em;
+	background-color: teal;
+	padding: 20px 30px;
+	display: block;
+	width: 600px;
+}
+</style>
+<script>
+function startTime() {
+    var today = new Date();
+	var y = today.getYear();
+	var mn = today.getMonth();
+	var d = today.getDate();
+	var day = today.getDay();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('txt').innerHTML =
+    h + ":" + m + ":" + s;
+	document.getElementById('txt2').innerHTML =
+    d + "-" + mn + "-" + (y+1900);
+    var t = setTimeout(startTime, 500);
+}
+function checkTime(i) {
+    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+    return i;
+}
+</script>
+</head>
+
+<body onload="startTime()">
+
+<div id="txt"></div>
+<div id="txt2"></div>
+</body>
+
+</html>
